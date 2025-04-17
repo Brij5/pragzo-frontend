@@ -1,15 +1,13 @@
-/* Basic Reset */
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
 }
 
-/* Variables */
 :root {
-    --primary-color: #4A90E2; /* Blue */
-    --secondary-color: #50E3C2; /* Teal */
-    --accent-color: #F5A623; /* Orange for emphasis */
+    --primary-color: #4A90E2;
+    --secondary-color: #50E3C2;
+    --accent-color: #F5A623;
     --text-color: #333;
     --light-gray: #f4f7f6;
     --white: #ffffff;
@@ -19,14 +17,12 @@
     --card-hover-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
 }
 
-/* Basic Styles */
 body {
     font-family: var(--body-font);
     line-height: 1.7;
     color: var(--text-color);
     background-color: var(--white);
 }
-/* Prevent body scroll when modal is open */
 body.modal-open {
     overflow: hidden;
 }
@@ -39,7 +35,7 @@ html {
 .container {
     max-width: 1200px;
     margin: auto;
-    overflow: visible; /* Allow dropdown overflow */
+    overflow: visible;
     padding: 0 25px;
 }
 
@@ -70,7 +66,6 @@ ul {
     list-style: none;
 }
 
-/* Header & Navigation */
 header {
     background: var(--white);
     color: var(--text-color);
@@ -139,7 +134,6 @@ header nav ul li a.active {
     background-color: #357ABD !important;
 }
 
-/* Dropdown Menu Styles */
 .dropdown-menu {
     display: none;
     position: absolute;
@@ -172,7 +166,6 @@ header nav ul li a.active {
     color: var(--primary-color);
 }
 li.dropdown:hover > .dropdown-menu {
-    /* Desktop hover effect - overridden on mobile */
     display: block;
 }
 li.dropdown > a::after {
@@ -184,9 +177,8 @@ li.dropdown > a::after {
 }
 
 
-/* Hero Section */
 #hero {
-    background: linear-gradient(rgba(255, 255, 255, 0.85), rgba(255, 255, 255, 0.85)), url('https://via.placeholder.com/1600x700/e0f2f7/888888?text=CUET+Exam+Deep+Dive') no-repeat center center/cover;
+    background: linear-gradient(rgba(255, 255, 255, 0.85), rgba(255, 255, 255, 0.85)), url('../images/hero-bg.jpg') no-repeat center center/cover;
     background-size: cover;
     background-position: center center;
     color: var(--text-color);
@@ -231,7 +223,6 @@ li.dropdown > a::after {
     box-shadow: 0 6px 15px rgba(245, 166, 35, 0.5);
 }
 
-/* CUET Features Section */
 #cuet-features {
     padding: 5rem 0;
     background: var(--light-gray);
@@ -286,7 +277,6 @@ li.dropdown > a::after {
     padding: 0 0.5rem;
 }
 
-/* Style for the modal trigger button */
 .download-trigger-button {
     display: inline-block;
     background-color: var(--accent-color);
@@ -296,13 +286,12 @@ li.dropdown > a::after {
     font-weight: 500;
     font-size: 0.9rem;
     cursor: pointer;
-    margin-top: auto; /* Push to bottom in flex container */
+    margin-top: auto;
     transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
     box-shadow: 0 2px 5px rgba(0,0,0,0.1);
     border: none;
     line-height: 1.4;
     text-align: center;
-    /* Ensure alignment in feature cards */
     align-self: center;
 }
 
@@ -317,9 +306,7 @@ li.dropdown > a::after {
     font-size: 0.9em;
 }
 
-/* Style for regular links used as buttons (like Explore Subjects) */
 .feature-card a.download-link {
-    /* Reusing button styles for visual consistency */
     display: inline-block;
     background-color: var(--accent-color);
     color: var(--white) !important;
@@ -348,13 +335,6 @@ li.dropdown > a::after {
 }
 
 
-/* Blog Preview Section */
-#blog-preview {
-    padding: 5rem 0;
-}
-#blog-preview h2 {
-    margin-bottom: 3rem;
-}
 .blog-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
@@ -369,17 +349,26 @@ li.dropdown > a::after {
     transition: transform 0.3s ease, box-shadow 0.3s ease;
     display: flex;
     flex-direction: column;
+    position: relative;
 }
 .blog-post-preview:hover {
     transform: translateY(-5px);
     box-shadow: var(--card-hover-shadow);
+}
+.blog-image-link {
+    display: block;
 }
 .blog-post-preview img {
     width: 100%;
     height: 200px;
     object-fit: cover;
     display: block;
+    transition: transform 0.3s ease;
 }
+.blog-post-preview:hover img {
+    transform: scale(1.05);
+}
+
 .blog-content {
     padding: 1.5rem;
     flex-grow: 1;
@@ -387,8 +376,16 @@ li.dropdown > a::after {
     flex-direction: column;
 }
 .blog-content h3 {
-    margin-bottom: 0.5rem;
+    margin-bottom: 0.7rem;
     line-height: 1.4;
+     font-size: 1.25rem;
+}
+.blog-content h3 a {
+    color: var(--text-color);
+    transition: color 0.3s ease;
+}
+.blog-content h3 a:hover {
+    color: var(--primary-color);
 }
 .blog-content p {
     font-size: 0.9rem;
@@ -400,12 +397,42 @@ li.dropdown > a::after {
     color: var(--primary-color);
     font-weight: bold;
     align-self: flex-start;
+    transition: color 0.3s ease, transform 0.2s ease;
+    display: inline-block;
 }
 .read-more-link:hover {
     text-decoration: underline;
+    color: var(--secondary-color);
+    transform: translateX(3px);
+}
+.post-meta {
+    font-size: 0.8rem;
+    color: #777;
+    margin-bottom: 0.8rem;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 15px;
+}
+.post-meta span i {
+    margin-right: 5px;
+    color: var(--secondary-color);
+}
+.view-all-container {
+    text-align: center;
+    margin-top: 3rem;
+}
+.view-all-btn {
+     padding: 12px 30px;
+     font-size: 1.1rem;
+     background-color: var(--primary-color);
+     box-shadow: 0 3px 8px rgba(74, 144, 226, 0.3);
+}
+.view-all-btn:hover {
+      background-color: #357ABD;
+      box-shadow: 0 5px 12px rgba(74, 144, 226, 0.4);
 }
 
-/* --- Optional: Basic Pagination Styles --- */
+
 .pagination {
     text-align: center;
     margin-top: 3rem;
@@ -413,40 +440,40 @@ li.dropdown > a::after {
     border-top: 1px solid #eee;
 }
 .pagination a.page-number,
-.pagination span.page-number { /* Style both links and spans (like ellipsis) */
+.pagination span.page-number {
     display: inline-block;
     padding: 8px 15px;
     margin: 0 4px;
     border: 1px solid #ddd;
     color: var(--primary-color);
     border-radius: 4px;
-    transition: background-color 0.3s ease, color 0.3s ease;
-    text-decoration: none; /* Ensure links aren't underlined */
+    transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+    text-decoration: none;
     font-size: 0.95rem;
 }
 .pagination a.page-number:hover,
 .pagination a.page-number.active {
     background-color: var(--primary-color);
-    color: var(--white) !important; /* Ensure white text */
+    color: var(--white) !important;
     border-color: var(--primary-color);
 }
 .pagination a.page-number.disabled {
     color: #ccc;
     border-color: #eee;
     cursor: not-allowed;
-    background-color: var(--white); /* Keep background standard */
+    background-color: var(--white);
 }
 .pagination a.page-number.disabled:hover {
      color: #ccc;
-     background-color: var(--white); /* No hover effect */
+     background-color: var(--white);
      border-color: #eee;
 }
 .pagination span.ellipsis {
-    border: none; /* Remove border from ellipsis */
-    padding: 8px 5px; /* Adjust padding */
+    border: none;
+    padding: 8px 5px;
     color: #aaa;
 }
-/* Footer */
+
 footer {
     background: var(--text-color);
     color: var(--light-gray);
@@ -464,7 +491,6 @@ footer a {
 footer a:hover {
     color: var(--white);
 }
-/* Social Media Styles */
 .social-media {
     margin-top: 1rem;
     margin-bottom: 1rem;
@@ -481,7 +507,6 @@ footer a:hover {
     transform: translateY(-3px);
 }
 
-/* --- Styles for Subject Listing Page --- */
 .subject-category {
     margin-bottom: 3rem;
     border-bottom: 1px solid #eee;
@@ -498,7 +523,7 @@ footer a:hover {
     font-size: 1.6rem;
     padding-bottom: 0.5rem;
     border-bottom: 2px solid var(--secondary-color);
-    display: inline-block; /* Limit border width to text */
+    display: inline-block;
 }
 .subject-category h3 i {
     margin-right: 10px;
@@ -507,7 +532,7 @@ footer a:hover {
 
 .subjects-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); /* Adjust minmax for desired item width */
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
     gap: 1.5rem;
 }
 
@@ -529,18 +554,16 @@ footer a:hover {
     font-weight: 500;
     color: var(--text-color);
     font-size: 1.05rem;
+     transition: color 0.3s ease;
 }
 .subject-link-item a:hover {
     color: var(--primary-color);
 }
 
-/* Adjust grid if only one item (like General Test) */
 .subjects-grid.single-item {
-     grid-template-columns: minmax(220px, 300px); /* Center a single item */
-     justify-content: center; /* Center grid track if needed */
+     grid-template-columns: minmax(220px, 300px);
+     justify-content: center;
 }
-
-/* --- Styles for Additional Pages --- */
 
 .simple-hero {
     background-color: var(--light-gray);
@@ -625,7 +648,7 @@ footer a:hover {
 .form-group input[type="text"],
 .form-group input[type="email"],
 .form-group input[type="password"],
-.form-group input[type="tel"], /* Added tel */
+.form-group input[type="tel"],
 .form-group textarea {
     width: 100%;
     padding: 12px 15px;
@@ -702,16 +725,12 @@ footer a:hover {
 .subject-section ul li {
     margin-bottom: 0.5rem;
 }
-/* Style for trigger buttons within subject page */
 .subject-section .download-trigger-button {
     margin-top: 1rem;
-    /* Reuses styles defined earlier */
 }
-/* Style for non-form links in subject page (like Mock Test link) */
 .subject-section a.download-link {
-    /* Reuse button style */
     display: inline-block;
-    background-color: var(--primary-color); /* Different color maybe? */
+    background-color: var(--primary-color);
     color: var(--white) !important;
     padding: 8px 18px;
     border-radius: 20px;
@@ -735,7 +754,9 @@ footer a:hover {
      margin-right: 8px;
      font-size: 0.9em;
 }
-
+ul.key-topics-list { /* Specific style for key topics list */
+    margin-top: 1rem;
+}
 
 #legal-content h2 {
     margin-top: 1.5rem;
@@ -761,8 +782,6 @@ footer a:hover {
 #legal-content ul li {
      margin-bottom: 0.5rem;
 }
-
-/* --- Styles for Modal --- */
 
 .modal-container {
     display: none;
@@ -855,24 +874,22 @@ footer a:hover {
      margin-right: 6px;
 }
 
-/* --- Styles for Full Blog Post Pages --- */
-
 .blog-post-full .blog-container {
-    max-width: 850px; /* Optimal reading width */
+    max-width: 850px;
     margin-left: auto;
     margin-right: auto;
 }
 
 .blog-featured-image {
     width: 100%;
-    max-width: 750px; /* Limit image width */
+    max-width: 750px;
     height: auto;
     border-radius: 8px;
     margin-bottom: 2.5rem;
-    display: block; /* Prevent extra space */
+    display: block;
     margin-left: auto;
-    margin-right: auto; /* Center image */
-     box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+    margin-right: auto;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
 }
 
 #blog-content-main h2 {
@@ -893,7 +910,7 @@ footer a:hover {
 #blog-content-main p {
     line-height: 1.8;
     margin-bottom: 1.2rem;
-    color: #444; /* Slightly darker text for readability */
+    color: #444;
 }
 
 #blog-content-main ul {
@@ -907,7 +924,7 @@ footer a:hover {
     color: #444;
 }
 #blog-content-main ul li strong {
-    font-weight: 600; /* Slightly bolder */
+    font-weight: 600;
 }
 
 #blog-content-main blockquote {
@@ -919,145 +936,7 @@ footer a:hover {
     background-color: var(--light-gray);
 }
 
-/* Responsive adjustments for blog post */
-@media (max-width: 768px) {
-    #blog-content-main h2 { font-size: 1.6rem; }
-    #blog-content-main h3 { font-size: 1.3rem; }
-    .blog-featured-image { margin-bottom: 1.5rem;}
-}
 
-/* --- Styles for Blog Improvements --- */
-
-.blog-post-preview {
-    /* Ensure position relative for potential absolute elements if needed later */
-    position: relative;
-    overflow: hidden; /* Good practice with border-radius */
-}
-.blog-image-link {
-    display: block; /* Remove extra space below image */
-}
-.blog-post-preview img {
-    transition: transform 0.3s ease; /* Add transition for hover effect */
-}
-.blog-post-preview:hover img {
-    transform: scale(1.05); /* Slight zoom on hover */
-}
-
-.post-meta {
-    font-size: 0.8rem;
-    color: #777;
-    margin-bottom: 0.8rem;
-    display: flex; /* Align items horizontally */
-    flex-wrap: wrap; /* Allow wrapping on small screens */
-    gap: 15px; /* Space between items */
-}
-.post-meta span i {
-    margin-right: 5px;
-    color: var(--secondary-color); /* Use a theme color */
-}
-
-.blog-content h3 {
-    font-size: 1.25rem; /* Slightly larger title */
-    margin-bottom: 0.7rem;
-}
-/* Make blog title a link and style it */
-.blog-content h3 a {
-    color: var(--text-color); /* Inherit text color */
-    transition: color 0.3s ease;
-}
-.blog-content h3 a:hover {
-    color: var(--primary-color); /* Highlight on hover */
-}
-
-.view-all-container {
-    text-align: center;
-    margin-top: 3rem; /* Space above button */
-}
-.view-all-btn {
-     /* Can reuse .cta-button styles or define unique ones */
-     /* Example: make it slightly less prominent than main CTA */
-     padding: 12px 30px;
-     font-size: 1.1rem;
-     background-color: var(--primary-color); /* Use primary instead of accent */
-     box-shadow: 0 3px 8px rgba(74, 144, 226, 0.3);
-}
-.view-all-btn:hover {
-      background-color: #357ABD; /* Darker primary */
-      box-shadow: 0 5px 12px rgba(74, 144, 226, 0.4);
-}
-
-/* --- Styles for Full Blog Post Pages --- */
-
-.blog-post-full .blog-container {
-    max-width: 850px; /* Optimal reading width */
-    margin-left: auto;
-    margin-right: auto;
-}
-
-.blog-featured-image {
-    width: 100%;
-    max-width: 750px; /* Limit image width */
-    height: auto;
-    border-radius: 8px;
-    margin-bottom: 2.5rem;
-    display: block; /* Prevent extra space */
-    margin-left: auto;
-    margin-right: auto; /* Center image */
-     box-shadow: 0 4px 15px rgba(0,0,0,0.1);
-}
-
-#blog-content-main h2 {
-    font-size: 1.8rem;
-    color: var(--primary-color);
-    margin-top: 2.5rem;
-    margin-bottom: 1rem;
-    padding-bottom: 0.5rem;
-    border-bottom: 1px solid #eee;
-}
-#blog-content-main h3 {
-    font-size: 1.4rem;
-    color: var(--text-color);
-    margin-top: 2rem;
-    margin-bottom: 0.8rem;
-}
-
-#blog-content-main p {
-    line-height: 1.8;
-    margin-bottom: 1.2rem;
-    color: #444; /* Slightly darker text for readability */
-}
-
-#blog-content-main ul {
-    list-style: disc;
-    margin-left: 25px;
-    margin-bottom: 1.5rem;
-}
-#blog-content-main ul li {
-    margin-bottom: 0.6rem;
-    line-height: 1.7;
-    color: #444;
-}
-#blog-content-main ul li strong {
-    font-weight: 600; /* Slightly bolder */
-}
-
-#blog-content-main blockquote {
-    border-left: 4px solid var(--secondary-color);
-    margin: 1.5rem 0;
-    padding: 0.5rem 1.5rem;
-    font-style: italic;
-    color: #555;
-    background-color: var(--light-gray);
-}
-
-/* Responsive adjustments for blog post */
-@media (max-width: 768px) {
-    #blog-content-main h2 { font-size: 1.6rem; }
-    #blog-content-main h3 { font-size: 1.3rem; }
-    .blog-featured-image { margin-bottom: 1.5rem;}
-}
-
-/* Responsive Design Adjustments */
 @media (max-width: 992px) {
     h1 { font-size: 2.5rem; }
     h2 { font-size: 2rem; }
@@ -1095,7 +974,10 @@ footer a:hover {
     .auth-container { max-width: 95%; }
     .modal-content { width: 95%; padding: 1.5rem; }
     .modal-title { font-size: 1.3rem; }
-
+    #blog-content-main h2 { font-size: 1.6rem; }
+    #blog-content-main h3 { font-size: 1.3rem; }
+    .blog-featured-image { margin-bottom: 1.5rem;}
+    .subjects-grid { grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); } /* Smaller subject links on mobile */
 }
 
 @media (max-width: 480px) {
@@ -1107,9 +989,12 @@ footer a:hover {
     .nav-button { padding: 6px 15px !important;}
     .feature-card .icon { font-size: 2.5rem; width: 60px; height: 60px; }
     .feature-card h3 { font-size: 1.2rem; }
-    #cuet-features, #blog-preview { padding: 3rem 0; }
+    #cuet-features, #blog-listing { padding: 3rem 0; }
     h2 { font-size: 1.6rem; margin-bottom: 1.5rem; }
      .auth-form { padding: 1.5rem; }
      .form-group.terms-check label { font-size: 0.85em;}
      .modal-content { padding: 1.5rem 1rem; }
+     .subjects-grid { grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 1rem;}
+     .subject-link-item a { font-size: 1rem; padding: 1rem; }
+     .blog-content { padding: 1.2rem;}
 }

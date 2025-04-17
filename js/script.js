@@ -1,32 +1,28 @@
 document.addEventListener('DOMContentLoaded', function() {
 
-    // Set current year in footer
     const currentYearSpan = document.getElementById('current-year');
     if (currentYearSpan) {
         currentYearSpan.textContent = new Date().getFullYear();
     }
 
-    // --- Smooth Scrolling & Active Nav Link Highlighting ---
     const mainNavLinks = document.querySelectorAll('header nav > ul > li > a.nav-link');
     const header = document.querySelector('header');
     let headerHeight = header ? header.offsetHeight : 0;
 
-    // Recalculate header height on resize and load
     function updateHeaderHeight() {
          headerHeight = header ? header.offsetHeight : 0;
     }
     window.addEventListener('resize', updateHeaderHeight);
-    setTimeout(updateHeaderHeight, 100); // Initial check after potential layout shifts
+    setTimeout(updateHeaderHeight, 100);
 
-    // Function for smooth scrolling
     function smoothScrollTo(targetId) {
-        updateHeaderHeight(); // Re-check header height before scroll
+        updateHeaderHeight();
         if (targetId && typeof targetId === 'string' && targetId.startsWith('#')) {
             try {
                 const targetElement = document.querySelector(targetId);
                 if (targetElement) {
                     const elementPosition = targetElement.getBoundingClientRect().top + window.pageYOffset;
-                    const offsetPosition = elementPosition - headerHeight - 10; // Added small buffer
+                    const offsetPosition = elementPosition - headerHeight - 10;
                     window.scrollTo({
                         top: offsetPosition,
                         behavior: 'smooth'
@@ -40,28 +36,23 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
 
-    // Global variable for current page filename
     let currentPage = window.location.pathname.split('/').pop() || 'index.html';
 
-    // Add click listeners for main nav links
     mainNavLinks.forEach(link => {
         link.addEventListener('click', function(e) {
             const targetHref = this.getAttribute('href');
-            const targetPath = targetHref.split('#')[0] || currentPage; // Page the link points to
+            const targetPath = targetHref.split('#')[0] || currentPage;
             const targetSectionId = targetHref.includes('#') ? '#' + targetHref.split('#')[1] : null;
 
-            // Check if linking to a section on the CURRENT page
             if (targetPath === currentPage && targetSectionId) {
                 e.preventDefault();
                 smoothScrollTo(targetSectionId);
-                 // Close mobile dropdown if open
                  const dropdownMenu = document.querySelector('.dropdown-menu');
                  if(dropdownMenu && dropdownMenu.classList.contains('open')){
                     dropdownMenu.classList.remove('open');
                     document.querySelector('.dropdown > a[aria-haspopup="true"]')?.setAttribute('aria-expanded', 'false');
                  }
             }
-            // Let browser handle navigation for links to other pages
         });
     });
 
@@ -69,9 +60,7 @@ document.addEventListener('DOMContentLoaded', function() {
     dropdownLinks.forEach(link => {
          link.addEventListener('click', function(e) {
              const targetHref = this.getAttribute('href');
-             // Allow navigation to subject-template.html? etc.
              if (targetHref && targetHref.startsWith('#') && !targetHref.includes('.html')) {
-                 // This case is unlikely with current setup but kept for safety
                  e.preventDefault();
                  smoothScrollTo(targetHref);
                  const parentDropdown = this.closest('.dropdown-menu');
@@ -80,7 +69,6 @@ document.addEventListener('DOMContentLoaded', function() {
                     document.querySelector('.dropdown > a[aria-haspopup="true"]')?.setAttribute('aria-expanded', 'false');
                  }
              }
-              // Close dropdown even when navigating away
               const parentDropdown = this.closest('.dropdown-menu');
               if (parentDropdown && parentDropdown.classList.contains('open')) {
                  parentDropdown.classList.remove('open');
@@ -109,7 +97,7 @@ document.addEventListener('DOMContentLoaded', function() {
          let firstSectionTop = Infinity;
          if (sections.length > 0) {
              try {
-                 const firstVisibleSection = Array.from(sections).find(s => s.offsetTop >= 0); // Find first section potentially in view
+                 const firstVisibleSection = Array.from(sections).find(s => s.offsetTop >= 0);
                  if (firstVisibleSection) {
                      firstSectionTop = firstVisibleSection.offsetTop - headerHeight - 50;
                  } else { firstSectionTop = 200; }
@@ -120,33 +108,27 @@ document.addEventListener('DOMContentLoaded', function() {
              try {
                  if (section.offsetHeight > 0) {
                     const sectionTop = section.offsetTop - headerHeight - 50;
-                    // Check if section top is above current scroll position
-                    // And if section bottom is below current scroll position (or close to it)
                     const sectionBottom = sectionTop + section.offsetHeight;
                     if (scrollPosition >= sectionTop && scrollPosition < sectionBottom ) {
-                        currentSectionId = section.getAttribute('id');
+                         const elementRect = section.getBoundingClientRect();
+                         const viewportHeight = window.innerHeight;
+                          if (elementRect.bottom > headerHeight + 50 && elementRect.top < viewportHeight / 2) {
+                              currentSectionId = section.getAttribute('id');
+                          }
                     }
                  }
              } catch(e) { console.error("Error getting section offsetTop for", section.id, e)}
         });
 
-        // If no section is actively in view but we've scrolled past the top threshold,
-        // keep the last active section ID or clear it if scrolled back up.
-        if (!currentSectionId && scrollPosition >= (firstSectionTop - 50) ) { // Scrolled down a bit
-            // Keep the last section ID if available from previous checks (might need state)
-            // For simplicity, let's prioritize the top section if nothing else matches precisely
+        if (!currentSectionId && scrollPosition >= (firstSectionTop - 50) ) {
             if (sections.length > 0) currentSectionId = sections[0].id;
         }
 
-
-        // If scrolled near the top on index page, set hero as active section
-        if (currentPage === 'index.html' && scrollPosition < (firstSectionTop > 100 ? firstSectionTop : 100)) { // Check if near top
+        if (currentPage === 'index.html' && scrollPosition < (firstSectionTop > 100 ? firstSectionTop : 100)) {
             currentSectionId = 'hero';
         } else if (currentPage !== 'index.html' && scrollPosition < 100) {
-             // On other pages, if scrolled to top, no section ID is active
              currentSectionId = '';
         }
-
 
         mainNavLinks.forEach(link => {
             const linkHref = link.getAttribute('href');
@@ -154,54 +136,47 @@ document.addEventListener('DOMContentLoaded', function() {
             const linkTargetPage = linkHref.split('#')[0] || 'index.html';
             const linkTargetSection = linkHref.includes('#') ? linkHref.split('#')[1] : null;
 
-            // Match page filename
             if (linkTargetPage === currentPage) {
-                 // If it targets a specific section, check if that section is active
                  if (linkTargetSection) {
                      if (linkTargetSection === currentSectionId) {
                          isActive = true;
                      }
                  } else {
-                     // If it *doesn't* target a section (e.g., about.html), activate if no specific section is active
                      if (currentSectionId === '' || (currentPage === 'index.html' && currentSectionId === 'hero')) {
-                          // Special case for 'Home' link on index page
                           if (linkHref === 'index.html#hero' && currentSectionId === 'hero') {
                               isActive = true;
                           } else if (linkHref !== 'index.html#hero') {
-                              // Activate About, Contact etc. if we are on that page and scrolled to top
                                 isActive = true;
                           }
                      }
                  }
+                  if (currentPage === 'index.html' && linkTargetSection === 'hero' && currentSectionId !== 'hero' && currentSectionId !== '') {
+                      isActive = false;
+                  }
             }
-
 
             if (isActive) {
                 link.classList.add('active');
             } else {
                 link.classList.remove('active');
             }
-
         });
 
     }, 50);
 
     window.addEventListener('scroll', updateActiveLink);
 
-    // --- Handle Hash on Page Load for Smooth Scroll ---
     const hash = window.location.hash;
     if (hash && document.querySelector(hash)) {
          setTimeout(() => {
-             console.log(`Hash detected on load: ${hash}. Scrolling...`);
              smoothScrollTo(hash);
-             setTimeout(updateActiveLink, 200); // Update active link after scroll animation might finish
+             setTimeout(updateActiveLink, 300);
          }, 150);
     } else {
-         updateActiveLink(); // Run immediately if no hash
+         updateActiveLink();
     }
 
 
-    // --- Mobile Dropdown Toggle ---
     const dropdownToggle = document.querySelector('.dropdown > a');
     const dropdownMenu = document.querySelector('.dropdown-menu');
 
@@ -210,6 +185,11 @@ document.addEventListener('DOMContentLoaded', function() {
             if (this.getAttribute('href') === '#') {
                 e.preventDefault();
             }
+            const screenWidth = window.innerWidth;
+             if (screenWidth <= 768 && this.getAttribute('href') !== '#') {
+                 e.preventDefault();
+             }
+
             const isOpening = !dropdownMenu.classList.contains('open');
             dropdownMenu.classList.toggle('open');
             this.setAttribute('aria-expanded', isOpening);
@@ -235,7 +215,6 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
 
-    // --- Modal Open/Close Logic ---
     const modalTriggers = document.querySelectorAll('.modal-trigger');
     const modalCloses = document.querySelectorAll('.modal-close');
     let currentPdfUrl = null;
@@ -299,7 +278,6 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 
 
-    // --- Modal Form Submission Logic ---
     const modalDownloadForms = document.querySelectorAll('.modal-download-form');
 
     modalDownloadForms.forEach(form => {
@@ -310,7 +288,6 @@ document.addEventListener('DOMContentLoaded', function() {
             const pdfUrl = currentPdfUrl;
 
             let isValid = true;
-            // Reset borders first
             this.querySelectorAll('input').forEach(input => input.style.borderColor = '#ccc');
 
             const requiredInputs = this.querySelectorAll('input[required]');
@@ -325,7 +302,7 @@ document.addEventListener('DOMContentLoaded', function() {
             if (emailInput && emailInput.value.trim() && !/.+@.+\..+/.test(emailInput.value)) {
                  isValid = false;
                  emailInput.style.borderColor = 'red';
-                 if (isValid) alert('Please enter a valid email address.'); // Alert only if other fields were valid
+                 if (isValid) alert('Please enter a valid email address.');
             }
 
             const phoneInput = this.querySelector('input[type="tel"]');
@@ -344,7 +321,6 @@ document.addEventListener('DOMContentLoaded', function() {
 
                 console.log(`Form Data Collected for ${resourceId}: Name=${name}, Email=${email}, Phone=${phone || 'N/A'}`);
 
-                // --- Simulation Only ---
                 alert('Thank you!\n(Data logged to console for demo.)\nOpening PDF in new tab...');
                 window.open(pdfUrl, '_blank');
 
@@ -354,7 +330,6 @@ document.addEventListener('DOMContentLoaded', function() {
                 currentPdfUrl = null;
 
             } else if (!isValid) {
-                 // Avoid multiple alerts
                  if((!emailInput || emailInput.style.borderColor !== 'red') && (!phoneInput || phoneInput.style.borderColor !== 'red')) {
                     alert('Please fill in all required fields correctly.');
                  }
@@ -369,7 +344,6 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 
 
-    // --- Dynamic Subject Page Logic (Integrated) ---
     if (document.getElementById('subject-content')) {
          const params = new URLSearchParams(window.location.search);
          let subject = params.get('subject');
@@ -433,7 +407,6 @@ document.addEventListener('DOMContentLoaded', function() {
                  'HINDI_NOTES': 'YOUR_HINDI_NOTES_ID_HERE', 'HINDI_PYQ': 'YOUR_HINDI_PYQ_ID_HERE',
                  'GENERALTEST_NOTES': 'YOUR_GENERALTEST_NOTES_ID_HERE', 'GENERALTEST_PYQ': 'YOUR_GENERALTEST_PYQ_ID_HERE',
                  'HISTORY_NOTES': 'YOUR_HISTORY_NOTES_ID_HERE', 'HISTORY_PYQ': 'YOUR_HISTORY_PYQ_ID_HERE',
-                 // Add IDs for ALL subjects...
                  'ECONOMICS_NOTES': 'YOUR_ECONOMICS_NOTES_ID_HERE', 'ECONOMICS_PYQ': 'YOUR_ECONOMICS_PYQ_ID_HERE',
                  'ACCOUNTANCY_NOTES': 'YOUR_ACCOUNTANCY_NOTES_ID_HERE', 'ACCOUNTANCY_PYQ': 'YOUR_ACCOUNTANCY_PYQ_ID_HERE',
                  'BUSINESSSTUDIES_NOTES': 'YOUR_BUSINESSSTUDIES_NOTES_ID_HERE', 'BUSINESSSTUDIES_PYQ': 'YOUR_BUSINESSSTUDIES_PYQ_ID_HERE',
@@ -471,7 +444,6 @@ document.addEventListener('DOMContentLoaded', function() {
              }
 
          } else {
-             // Handle case where no subject is specified
              if(syllabusInfo) syllabusInfo.textContent = 'Select a subject from the navigation menu to view specific resources.';
              if(notesInfo) notesInfo.textContent = '';
              if(pyqInfo) pyqInfo.textContent = '';
@@ -487,6 +459,6 @@ document.addEventListener('DOMContentLoaded', function() {
                   }
              });
          }
-    } // End subject page specific logic
+    }
 
-}); // End DOMContentLoaded
+});
