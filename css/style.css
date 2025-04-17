@@ -412,7 +412,8 @@ li.dropdown > a::after {
     padding-top: 1.5rem;
     border-top: 1px solid #eee;
 }
-.pagination a.page-number {
+.pagination a.page-number,
+.pagination span.page-number { /* Style both links and spans (like ellipsis) */
     display: inline-block;
     padding: 8px 15px;
     margin: 0 4px;
@@ -420,25 +421,31 @@ li.dropdown > a::after {
     color: var(--primary-color);
     border-radius: 4px;
     transition: background-color 0.3s ease, color 0.3s ease;
+    text-decoration: none; /* Ensure links aren't underlined */
+    font-size: 0.95rem;
 }
 .pagination a.page-number:hover,
 .pagination a.page-number.active {
     background-color: var(--primary-color);
-    color: var(--white);
+    color: var(--white) !important; /* Ensure white text */
     border-color: var(--primary-color);
-    text-decoration: none;
 }
 .pagination a.page-number.disabled {
     color: #ccc;
     border-color: #eee;
     cursor: not-allowed;
-    background-color: transparent;
+    background-color: var(--white); /* Keep background standard */
 }
 .pagination a.page-number.disabled:hover {
      color: #ccc;
-     background-color: transparent;
+     background-color: var(--white); /* No hover effect */
+     border-color: #eee;
 }
-
+.pagination span.ellipsis {
+    border: none; /* Remove border from ellipsis */
+    padding: 8px 5px; /* Adjust padding */
+    color: #aaa;
+}
 /* Footer */
 footer {
     background: var(--text-color);
